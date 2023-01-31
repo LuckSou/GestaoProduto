@@ -38,16 +38,16 @@ namespace Application
         {
             if (env.IsDevelopment())
             {
+                app.UseSwagger();
+
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Gestão de Produto");
+                    
+                });
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseSwagger();
-
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Gestão de Produto");
-                c.RoutePrefix = string.Empty;
-            });
             app.UseRouting();
 
             app.UseAuthorization();

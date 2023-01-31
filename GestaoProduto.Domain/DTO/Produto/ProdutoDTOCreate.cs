@@ -8,7 +8,6 @@ namespace GestaoProduto.Domain.DTO.Produto
         [StringLength(100, ErrorMessage = "A descrição do produto deve ter no máximo {1} caracteres.")]
         public string Descricao { get; set; }
 
-        public int StatusProduto { get; set; }
 
         [Required(ErrorMessage = "A data de fabricação é obrigatória.")]
         public DateTime DataFabricacao { get; set; }

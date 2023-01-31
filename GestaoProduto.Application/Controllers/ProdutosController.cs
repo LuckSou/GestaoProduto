@@ -5,7 +5,7 @@ using System.Net;
 
 namespace GestaoProduto.Application.Controllers
 {
-    //[Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class ProdutosController : ControllerBase
     {
@@ -15,9 +15,8 @@ namespace GestaoProduto.Application.Controllers
             _service = service;
         }
 
-        [Route("api/BuscarTodos")]
         [HttpGet]
-        public async Task<ActionResult> GetAll()
+        public async Task<ActionResult> BuscarTodos()
         {
             try
             {
@@ -30,8 +29,7 @@ namespace GestaoProduto.Application.Controllers
         }
 
         [HttpGet]
-        [Route("api/BuscarProdutoPorId")]
-        public async Task<ActionResult> Get(int id)
+        public async Task<ActionResult> BuscarProdutoPorId(int id)
         {
             try
             {
@@ -44,8 +42,7 @@ namespace GestaoProduto.Application.Controllers
         }
 
         [HttpPost]
-        [Route("api/CadastrarProduto")]
-        public async Task<ActionResult> Post([FromBody] ProdutoDTOCreate produto)
+        public async Task<ActionResult> CadastrarProduto([FromBody] ProdutoDTOCreate produto)
         {
             try
             {
@@ -66,12 +63,31 @@ namespace GestaoProduto.Application.Controllers
         }
 
         [HttpPut]
-        [Route("api/AtualizarProduto")]
-        public async Task<ActionResult> Put([FromBody] ProdutoDTOUpdate produto)
+        public async Task<ActionResult> AtualizarProduto([FromBody] ProdutoDTOUpdate produto)
         {
             try
             {
                 var result = await _service.Put(produto);
+                if (result != null)
+                {
+                    return Ok(result);
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            catch (ArgumentException e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+            }
+        }
+        [HttpPut]
+        public async Task<ActionResult> AtualizarSituacaoProduto(int id)
+        {
+            try
+            {
+                var result = await _service.PutStatus(id);
                 if (result != null)
                 {
                     return Ok(result);

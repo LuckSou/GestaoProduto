@@ -42,6 +42,8 @@ namespace GestaoProduto.Service.Service
                 var model = _mapper.Map<ProdutoModel>(produto);
                 var entity = _mapper.Map<ProdutoEntity>(model);
 
+                entity.StatusProduto = 1;
+
                 var result = await _repository.InsertAsync(entity);
                 return _mapper.Map<ProdutoDTOCreateResult>(result);
             }
@@ -60,6 +62,15 @@ namespace GestaoProduto.Service.Service
             return _mapper.Map<ProdutoDTOUpdateResult>(result);
         }
 
+        public async Task<ProdutoDTOUpdateResult> PutStatus(int id)
+        {
+            var model = await _repository.BuscaIDAsync(id);
+            var entity = _mapper.Map<ProdutoEntity>(model);
+
+            entity.StatusProduto = entity.StatusProduto == 0 ? 1 : 0;
+            var result = await _repository.UpdateAsync(entity);
+            return _mapper.Map<ProdutoDTOUpdateResult>(result);
+        }
     }
 }
 
