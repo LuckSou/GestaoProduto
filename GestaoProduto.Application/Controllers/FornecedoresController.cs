@@ -5,7 +5,7 @@ using System.Net;
 
 namespace GestaoProduto.Application.Controllers
 {
-    //[Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class FornecedoresController : ControllerBase
     {
@@ -15,7 +15,6 @@ namespace GestaoProduto.Application.Controllers
             _service = service;
         }
 
-        [Route("api/BuscaFornecedores")]
         [HttpGet]
         public async Task<ActionResult> BuscaFornecedores()
         {
@@ -29,8 +28,7 @@ namespace GestaoProduto.Application.Controllers
             }
         }
 
-        [HttpGet()]
-        [Route("api/BuscaFornecedorID")]
+        [HttpGet]
         public async Task<ActionResult> BuscaFornecedorID(int id)
         {
             try
@@ -43,8 +41,7 @@ namespace GestaoProduto.Application.Controllers
             }
         }
 
-        [HttpPost()]
-        [Route("api/InsereFornecedor")]
+        [HttpPost]
         public async Task<ActionResult> InsereFornecedor([FromBody] FornecedorDTOCreate fornecedor)
         {
             try
@@ -65,7 +62,7 @@ namespace GestaoProduto.Application.Controllers
             }
         }
 
-        [HttpPut("AtualizaFornecedores")]
+        [HttpPut]
         public async Task<ActionResult> AtualizaFornecedores([FromBody] FornecedorDTOUpdate fornecedor)
         {
             try

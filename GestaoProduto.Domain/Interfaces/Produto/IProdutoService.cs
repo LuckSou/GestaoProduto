@@ -8,6 +8,7 @@ namespace GestaoProduto.Domain.Interfaces.Produto
         Task<IEnumerable<ProdutoDTO>> GetAll();
         Task<ProdutoDTOCreateResult> Post(ProdutoDTOCreate produto);
         Task<ProdutoDTOUpdateResult> Put(ProdutoDTOUpdate produto);
+        Task<ProdutoDTOUpdateResult> PutStatus(int id);
         Task<bool> Delete(int id);
     }
 }

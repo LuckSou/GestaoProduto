@@ -28,10 +28,10 @@ namespace GestaoProduto.Service.Service
             return _mapper.Map<FornecedorDTO>(entity);
         }
 
-        public async Task<IEnumerable<FornecedorDTO>> GetAll()
+        public async Task<IEnumerable<FornecedorDTOCompleto>> GetAll()
         {
             var listentity = await _repository.SelectAsync();
-            return _mapper.Map<IEnumerable<FornecedorDTO>>(listentity);
+            return _mapper.Map<IEnumerable<FornecedorDTOCompleto>>(listentity);
         }
 
         public async Task<FornecedorDTOCreateResult> Post(FornecedorDTOCreate fornecedor)

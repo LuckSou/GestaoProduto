@@ -14,7 +14,7 @@ namespace GestaoProduto.Service.Test
         private Mock<IFornecedorService> _serviceMock;
 
         [Fact(DisplayName ="É Possivel Executar o Metodo GET.")]      
-        public async Task E_Possivel_Executar_Metodo_Get()
+        public async Task GET_BuscaFornecedorPorID_DeveRetornarFornecedorDTO()
         {
             _serviceMock= new Mock<IFornecedorService>();
             _serviceMock.Setup(m => m.Get(ID)).ReturnsAsync(fornecedorDTO);
