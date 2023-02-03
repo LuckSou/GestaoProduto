@@ -1,87 +1,91 @@
 ﻿using GestaoProduto.Domain.DTO.Fornecedor;
 using GestaoProduto.Domain.Interfaces.Fornecedor;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Net;
 
-namespace GestaoProduto.Application.Controllers
+namespace Fornecedor.Application.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class FornecedoresController : ControllerBase
     {
-        public IFornecedorService _service { get; set; }
-        public FornecedoresController(IFornecedorService service)
+        private readonly IFornecedorService _fornecedorService;
+
+        public FornecedoresController(IFornecedorService fornecedorService)
         {
-            _service = service;
+            _fornecedorService = fornecedorService;
         }
 
         [HttpGet]
-        public async Task<ActionResult> BuscaFornecedores()
+        public ActionResult BuscarTodosFornecedores()
         {
             try
             {
-                return Ok(await _service.GetAll());
+                var fornecedores = _fornecedorService.GetAll();
+                return Ok(fornecedores);
             }
-            catch (ArgumentException e)
+            catch (Exception ex)
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+                return TratarErro(ex);
             }
         }
 
         [HttpGet]
-        public async Task<ActionResult> BuscaFornecedorID(int id)
+        public ActionResult BuscarFornecedorPorId(int id)
         {
             try
             {
-                return Ok(await _service.Get(id));
+                var fornecedor = _fornecedorService.Get(id);
+                return Ok(fornecedor);
             }
-            catch (ArgumentException e)
+            catch (Exception ex)
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+                return TratarErro(ex);
             }
         }
 
         [HttpPost]
-        public async Task<ActionResult> InsereFornecedor([FromBody] FornecedorDTOCreate fornecedor)
+        public ActionResult CadastrarFornecedor([FromBody] FornecedorDTOCreate fornecedorDTO)
         {
             try
             {
-                var result = await _service.Post(fornecedor);
-                if (result != null)
-                {
-                    return Created(new Uri(Url.Link("GetWithIdFornecedor", new { id = result.Id })), result);
-                }
-                else
+                var fornecedor = _fornecedorService.Post(fornecedorDTO);
+                if (fornecedor == null)
                 {
                     return BadRequest();
                 }
+                return Ok(fornecedor);
             }
-            catch (ArgumentException e)
+            catch (Exception ex)
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+                return TratarErro(ex);
             }
         }
 
         [HttpPut]
-        public async Task<ActionResult> AtualizaFornecedores([FromBody] FornecedorDTOUpdate fornecedor)
+        public ActionResult AtualizarFornecedor([FromBody] FornecedorDTOUpdate fornecedorDTO)
         {
             try
             {
-                var result = await _service.Put(fornecedor);
-                if (result != null)
-                {
-                    return Ok(result);
-                }
-                else
+                var fornecedor = _fornecedorService.Put(fornecedorDTO);
+                if (fornecedor == null)
                 {
                     return BadRequest();
                 }
+                return Ok(fornecedor);
             }
-            catch (ArgumentException e)
+            catch (Exception ex)
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+                return TratarErro(ex);
             }
         }
 
+        private ActionResult TratarErro(Exception ex)
+        {
+            return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+        }
     }
 }
+
+

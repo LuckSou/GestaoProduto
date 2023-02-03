@@ -4,6 +4,7 @@ namespace GestaoProduto.Domain.DTO.Produto
 {
     public class ProdutoDTOCompleto
     {
+        public int Id { get; set; }
         public string Descricao { get; set; }
         public int StatusProduto { get; set; }
         public DateTime DataFabricacao { get; set; }

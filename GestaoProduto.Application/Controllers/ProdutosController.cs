@@ -1,6 +1,7 @@
 ﻿using GestaoProduto.Domain.DTO.Produto;
 using GestaoProduto.Domain.Interfaces.Produto;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Net;
 
 namespace GestaoProduto.Application.Controllers
@@ -9,79 +10,83 @@ namespace GestaoProduto.Application.Controllers
     [ApiController]
     public class ProdutosController : ControllerBase
     {
-        public IProdutoService _service { get; set; }
+        private readonly IProdutoService _service;
+
         public ProdutosController(IProdutoService service)
         {
             _service = service;
         }
 
         [HttpGet]
-        public async Task<ActionResult> BuscarTodos()
+        public ActionResult BuscarTodos()
         {
             try
             {
-                return Ok(await _service.GetAll());
+                var result = _service.GetAll();
+                return Ok(result);
             }
-            catch (ArgumentException e)
+            catch (Exception ex)
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+                return TratarErro(ex);
             }
         }
 
         [HttpGet]
-        public async Task<ActionResult> BuscarProdutoPorId(int id)
+        public ActionResult BuscarProdutoPorId(int id)
         {
             try
             {
-                return Ok(await _service.Get(id));
+                var result = _service.Get(id);
+                return Ok(result);
             }
-            catch (ArgumentException e)
+            catch (Exception ex)
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+                return TratarErro(ex);
             }
         }
 
         [HttpPost]
-        public async Task<ActionResult> CadastrarProduto([FromBody] ProdutoDTOCreate produto)
+        public async Task<ActionResult> CadastrarProduto([FromBody] ProdutoDTOCreate produtoDTO)
         {
             try
             {
-                var result = await _service.Post(produto);
-                if (result != null)
+                var produto = await _service.Post(produtoDTO);
+                if (produto != null)
                 {
-                    return Ok(result); 
+                    return Ok(produto);
                 }
                 else
                 {
                     return BadRequest();
                 }
             }
-            catch (ArgumentException e)
+            catch (Exception ex)
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+                return TratarErro(ex);
             }
         }
 
         [HttpPut]
-        public async Task<ActionResult> AtualizarProduto([FromBody] ProdutoDTOUpdate produto)
+        public async Task<ActionResult> AtualizarProduto([FromBody] ProdutoDTOUpdate produtoDTO)
         {
             try
             {
-                var result = await _service.Put(produto);
-                if (result != null)
+                var produto = await _service.Put(produtoDTO);
+                if (produto != null)
                 {
-                    return Ok(result);
+                    return Ok(produto);
                 }
                 else
                 {
                     return BadRequest();
                 }
             }
-            catch (ArgumentException e)
+            catch (Exception ex)
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+                return TratarErro(ex);
             }
         }
+
         [HttpPut]
         public async Task<ActionResult> AtualizarSituacaoProduto(int id)
         {
@@ -97,10 +102,15 @@ namespace GestaoProduto.Application.Controllers
                     return BadRequest();
                 }
             }
-            catch (ArgumentException e)
+            catch (Exception ex)
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+                return TratarErro(ex);
             }
+        }
+
+        private ActionResult TratarErro(Exception ex)
+        {
+            return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
         }
     }
 }

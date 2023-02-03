@@ -1,13 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace GestaoProduto.Domain.DTO.Produto
 {
     public class ProdutoDTOCreate
     {
-        [Required(ErrorMessage = "É necessario informar a descrição do produto!")]
-        [StringLength(100, ErrorMessage = "A descrição do produto deve ter no máximo {1} caracteres.")]
+        [Required(ErrorMessage = "A descrição é obrigatória.")]
+        [StringLength(100, ErrorMessage = "A descrição deve ter no máximo 100 caracteres.")]
         public string Descricao { get; set; }
-
 
         [Required(ErrorMessage = "A data de fabricação é obrigatória.")]
         public DateTime DataFabricacao { get; set; }
@@ -16,7 +16,7 @@ namespace GestaoProduto.Domain.DTO.Produto
         [DataFabricacaoMenorDataValidade(ErrorMessage = "A data de fabricação não pode ser maior ou igual à data de validade.")]
         public DateTime DataValidade { get; set; }
 
-        [Required(ErrorMessage = "É necessario informar o ID do fornecedor.")]
+        [Required(ErrorMessage = "O ID do fornecedor é obrigatório.")]
         public int FornecedorID { get; set; }
     }
 
