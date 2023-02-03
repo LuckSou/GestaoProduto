@@ -13,7 +13,7 @@ namespace GestaoProduto.Domain.DTO.Produto
         public DateTime DataFabricacao { get; set; }
 
         [Required(ErrorMessage = "A data de validade é obrigatória.")]
-        [DataFabricacaoMenorDataValidade(ErrorMessage = "A data de fabricação não pode ser maior ou igual à data de validade")]
+        [DataFabricacaoMenorDataValidade(ErrorMessage = "A data de fabricação não pode ser maior ou igual à data de validade.")]
         public DateTime DataValidade { get; set; }
 
         [Required(ErrorMessage = "É necessario informar o ID do fornecedor.")]
